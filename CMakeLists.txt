@@ -43,12 +43,6 @@ if(OPENSSL_FOUND)
     include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/spdlog
-)
-
 file(GLOB_RECURSE SOURCES "src/*.cpp" "rc/*.h")
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -56,7 +50,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 if (NOT TARGET spdlog)
-    add_subdirectory(ThirdParty/spdlog EXCLUDE_FROM_ALL)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/spdlog EXCLUDE_FROM_ALL)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/sVanillaPluginCommon)
 endif()
 
 option(ENABLE_TEST "Enable Test" OFF)
@@ -67,6 +62,13 @@ endif()
 
 add_compile_definitions(PLUGIN_DLL_EXPORTS)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/spdlog
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/sVanillaPluginCommon/include
+)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -81,8 +83,9 @@ add_custom_command(TARGET ${PROJECT_NAME}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:spdlog> $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
+
+
 # install
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
 install(TARGETS ${PROJECT_NAME}
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
