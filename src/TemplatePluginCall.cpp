@@ -1,20 +1,23 @@
 
-#include "TemplatePluginCall.h"
+#include <TemplatePluginCall.h>
 #include "TemplatePlugin.h"
 
-TemplatePlugin *pPlugin = new TemplatePlugin;
+TemplatePlugin *pPlugin = nullptr;
 
-Plugin::IPlugin *plugin()
+PluginHandle pluginHandle()
 {
-    return pPlugin;
+    if (!pPlugin)
+    {
+        pPlugin = new TemplatePlugin;
+    }
+    return PluginHandle(pPlugin);
 }
 
-const char *pluginName()
+void pluginDeinit()
 {
-    return pPlugin->pluginName().c_str();
-}
-
-const char *pluginVersion()
-{
-    return pPlugin->pluginVersion().c_str();
+    if (pPlugin)
+    {
+        delete pPlugin;
+        pPlugin = nullptr;
+    }
 }
