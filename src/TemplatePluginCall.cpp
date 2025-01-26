@@ -2,7 +2,7 @@
 #include <TemplatePluginCall.h>
 #include "TemplatePlugin.h"
 
-TemplatePlugin *pPlugin = nullptr;
+TemplatePlugin* pPlugin = nullptr;
 
 PluginHandle pluginInit()
 {

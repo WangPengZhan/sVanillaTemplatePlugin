@@ -1,11 +1,11 @@
 #include "TemplateLogin.h"
 
-AbstractLogin::LoginSatus TemplateLogin::getLoginStatus()
+AbstractLoginApi::LoginSatus TemplateLogin::getLoginStatus()
 {
     return LoginSatus();
 }
 
-bool TemplateLogin::getScanContext(std::string &content)
+bool TemplateLogin::getScanContext(std::string& content)
 {
     return false;
 }
@@ -34,12 +34,12 @@ std::vector<adapter::BaseVideoView> TemplateLogin::history()
     return {};
 }
 
-const TemplateLogin::LoginResource &TemplateLogin::allResources() const
+const TemplateLogin::LoginResource& TemplateLogin::allResources() const
 {
     return m_emptyArray;
 }
 
-const std::vector<uint8_t> &TemplateLogin::resource(ResourceIndex index) const
+const std::vector<uint8_t>& TemplateLogin::resource(ResourceIndex index) const
 {
     return m_emptyString;
 }
