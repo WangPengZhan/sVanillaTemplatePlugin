@@ -74,12 +74,28 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        nlohmann_json::nlohmann_json
         CURL::libcurl
         spdlog
-        PluginCommon
         ${OPENSSL_LIBRARIES}
+        FFmpeg
 )
+
+set(STATIC_LIBS
+    PluginCommon
+    nlohmann_json::nlohmann_json
+)
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            -Wl,--whole-archive ${STATIC_LIBS} -Wl,--no-whole-archive
+    )
+else()
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            ${STATIC_LIBS}
+    )
+endif()
 
 add_custom_command(TARGET ${PROJECT_NAME}
     POST_BUILD
