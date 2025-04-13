@@ -1,6 +1,7 @@
 #include "TemplatePlugin.h"
 #include "PluginMessage.h"
 #include "Download/AbstractDownloader.h"
+#include "TemplatePluginLog.h"
 
 namespace
 {
@@ -25,6 +26,8 @@ PluginMessage TemplatePlugin::m_pluginMessage = {
     templateplugin::pluginID, templateplugin::name, templateplugin::version, templateplugin::description, templateplugin::domain,
 };
 
+std::string TemplatePlugin::m_dir;
+
 const PluginMessage& TemplatePlugin::pluginMessage() const
 {
     return m_pluginMessage;
@@ -37,20 +40,33 @@ const std::vector<uint8_t>& TemplatePlugin::websiteIcon()
 
 bool TemplatePlugin::canParseUrl(const std::string& url)
 {
+    TEMPLATE_LOG_INFO("canParseUrl: {}", url);
     return false;
 }
 
 adapter::VideoView TemplatePlugin::getVideoView(const std::string& url)
 {
+    TEMPLATE_LOG_INFO("getVideoView: {}", url);
     return adapter::VideoView();
 }
 
 std::shared_ptr<download::FileDownloader> TemplatePlugin::getDownloader(const VideoInfoFull& videoInfo)
 {
+    TEMPLATE_LOG_INFO("getDownloader: {}", videoInfo.getGuid());
     return std::shared_ptr<download::FileDownloader>();
 }
 
 LoginProxy TemplatePlugin::loginer()
 {
     return LoginProxy(m_login);
+}
+
+void TemplatePlugin::setDir(std::string dir)
+{
+    m_dir = dir;
+}
+
+const std::string& TemplatePlugin::getDir()
+{
+    return m_dir;
 }

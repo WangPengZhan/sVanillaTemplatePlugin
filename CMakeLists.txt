@@ -83,6 +83,7 @@ target_link_libraries(${PROJECT_NAME}
 set(STATIC_LIBS
     PluginCommon
     nlohmann_json::nlohmann_json
+    Util
 )
 
 if(UNIX AND NOT APPLE)
