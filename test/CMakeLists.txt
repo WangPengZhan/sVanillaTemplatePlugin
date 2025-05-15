@@ -1,4 +1,5 @@
-set(PluginTest TemplatePlugin_test)
+set(TestTarget TemplatePlugin)
+set(PluginTest ${TestTarget}_test)
 file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.h *.cpp)
 set(SOURCES ${TEST_SOURCES})
 
@@ -12,6 +13,9 @@ include_directories(
 )
 
 add_executable(${PluginTest} ${SOURCES})
+set_target_properties(${PluginTest} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY $<TARGET_FILE_DIR:${TestTarget}>
+)
 add_test(NAME ${PluginTest} COMMAND ${PluginTest})
 
 if (NOT TARGET spdlog)
@@ -29,7 +33,7 @@ target_include_directories(${PluginTest}
 
 target_link_libraries(${PluginTest}
     PRIVATE
-        TemplatePlugin
+        ${TestTarget}
         GTest::gtest_main 
 )
 
@@ -37,5 +41,5 @@ add_custom_command(TARGET ${PluginTest}
     POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:spdlog> $<TARGET_FILE_DIR:${PluginTest}>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:FFmpeg> $<TARGET_FILE_DIR:${PluginTest}>
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:TemplatePlugin> $<TARGET_FILE_DIR:${PluginTest}>
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${TestTarget}> $<TARGET_FILE_DIR:${PluginTest}>
 )
