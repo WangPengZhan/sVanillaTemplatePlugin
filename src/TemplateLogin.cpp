@@ -14,6 +14,19 @@ void TemplateLogin::loginSuccess()
 {
 }
 
+std::string TemplateLogin::cookies() const
+{
+    return {};
+}
+void TemplateLogin::setCookies(std::string cookies)
+{
+}
+
+bool TemplateLogin::refreshCookies(std::string cookies)
+{
+    return false;
+}
+
 UserInfo TemplateLogin::getUserInfo(std::string dir)
 {
     return UserInfo();

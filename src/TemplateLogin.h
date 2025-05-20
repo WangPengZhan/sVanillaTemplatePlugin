@@ -9,6 +9,11 @@ public:
     LoginSatus getLoginStatus() override;
     bool getScanContext(std::string& content) override;
     void loginSuccess() override;
+
+    std::string cookies() const override;
+    void setCookies(std::string cookies) override;
+    bool refreshCookies(std::string cookies) override;
+
     UserInfo getUserInfo(std::string dir) override;
     bool isLogin() const override;
     bool logout() override;
