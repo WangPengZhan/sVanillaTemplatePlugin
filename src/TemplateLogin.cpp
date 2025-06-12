@@ -14,6 +14,11 @@ void TemplateLogin::loginSuccess()
 {
 }
 
+bool TemplateLogin::supportLogin() const
+{
+    return false;
+}
+
 std::string TemplateLogin::cookies() const
 {
     return {};
