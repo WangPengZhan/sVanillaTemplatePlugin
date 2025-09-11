@@ -12,8 +12,8 @@ TEST(TemplatePlugin_Test, test)
 
 TEST(TemplatePlugin_Test, INFO)
 {
-    auto hanlde = pluginInit();
-    auto plugin = reinterpret_cast<plugin::IPlugin*>(hanlde);
+    auto handle = pluginInit();
+    auto plugin = reinterpret_cast<plugin::IPlugin*>(handle);
     auto info = plugin->pluginMessage();
     EXPECT_EQ(info.name, "template");
     EXPECT_EQ(info.pluginId, 0);

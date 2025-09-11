@@ -6,7 +6,7 @@ class TemplateLogin : public AbstractLoginApi
 {
 public:
     // thread-safe
-    LoginSatus getLoginStatus() override;
+    LoginStatus getLoginStatus() override;
     bool getScanContext(std::string& content) override;
     void loginSuccess() override;
 
@@ -25,5 +25,5 @@ public:
     const std::vector<uint8_t>& resource(ResourceIndex index) const override;
 
     // type
-    int type() const override;
+    int pluginId() const override;
 };

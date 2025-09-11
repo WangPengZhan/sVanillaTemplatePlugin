@@ -1,8 +1,9 @@
 #include "TemplateLogin.h"
+#include "PluginMessage.h"
 
-AbstractLoginApi::LoginSatus TemplateLogin::getLoginStatus()
+AbstractLoginApi::LoginStatus TemplateLogin::getLoginStatus()
 {
-    return LoginSatus();
+    return LoginStatus();
 }
 
 bool TemplateLogin::getScanContext(std::string& content)
@@ -62,7 +63,7 @@ const std::vector<uint8_t>& TemplateLogin::resource(ResourceIndex index) const
     return m_emptyString;
 }
 
-int TemplateLogin::type() const
+int TemplateLogin::pluginId() const
 {
-    return 0;
+    return templateplugin::pluginID;
 }
