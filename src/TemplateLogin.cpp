@@ -15,7 +15,7 @@ void TemplateLogin::loginSuccess()
 {
 }
 
-bool TemplateLogin::supportLogin() const
+bool TemplateLogin::supportsLogin() const
 {
     return false;
 }
@@ -33,12 +33,17 @@ bool TemplateLogin::refreshCookies(std::string cookies)
     return false;
 }
 
+std::string TemplateLogin::domain() const
+{
+    return {};
+}
+
 UserInfo TemplateLogin::getUserInfo(std::string dir)
 {
     return UserInfo();
 }
 
-bool TemplateLogin::isLogin() const
+bool TemplateLogin::isLoggedIn() const
 {
     return false;
 }
