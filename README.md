@@ -1,6 +1,6 @@
 # sVanilla Plugin Template
 
-This repository is a C++ template for building sVanilla plugins. It provides the basic plugin lifecycle entry points, plugin metadata, placeholder implementations for parsing/downloading/login APIs, logging setup, CMake integration, vcpkg dependency management, and a small GTest test target.
+This repository is a C++ template for building sVanilla plugins. It provides the basic plugin lifecycle entry points, plugin metadata, placeholder implementations for parsing/downloading/login APIs, logging setup, CMake integration, vcpkg dependency management, and GTest-based plugin and unit tests.
 
 Use this project as the starting point for a new sVanilla site/platform plugin.
 
@@ -12,7 +12,7 @@ Use this project as the starting point for a new sVanilla site/platform plugin.
 - Integrates with `sVanillaPluginCommon`
 - Uses `spdlog` for plugin logging
 - Provides template implementations for `plugin::IPlugin` and `AbstractLoginApi`
-- Includes an optional GTest test target
+- Includes optional GTest targets for the built plugin artifact and statically linked unit tests
 - Includes helper scripts for code formatting and embedding binary resources
 
 ## Requirements
@@ -67,7 +67,7 @@ For single-config generators such as Ninja, build artifacts are usually placed u
 build/
 ```
 
-The build produces the `TemplatePlugin` shared library. The `spdlog` shared library is copied to the same output directory after the plugin is built.
+The build produces the `TemplatePlugin` shared library. The `spdlog` and `FFmpeg` shared libraries are copied to the same output directory after the plugin is built.
 
 ## Tests
 
@@ -79,7 +79,12 @@ cmake --build build --config Debug
 ctest --test-dir build -C Debug --output-on-failure
 ```
 
-The current test target validates the default plugin metadata:
+Enabling tests also builds `TemplatePlugin_static`, which allows unit tests to exercise plugin implementation code without loading the shared library. CTest runs two test executables:
+
+- `TemplatePlugin_plugin_test` links to the built plugin and verifies its exported lifecycle, metadata, and website icon.
+- `TemplatePlugin_unit_test` links to `TemplatePlugin_static` and verifies implementation behavior such as plugin-directory storage.
+
+The plugin artifact test validates the default metadata:
 
 - Plugin name: `template`
 - Plugin ID: `0`
@@ -99,7 +104,10 @@ The current test target validates the default plugin metadata:
 |   `-- TemplatePluginLog.h     # Logger name and logging macros
 |-- test/
 |   |-- CMakeLists.txt          # Test target
-|   `-- test.cpp                # GTest cases
+|   |-- plugin/
+|   |   `-- test_plugin.cpp     # Shared plugin artifact tests
+|   `-- unit/
+|       `-- unit_test.cpp       # Statically linked unit tests
 |-- scripts/
 |   |-- clang_format_all.py     # Formats src/ and test/
 |   `-- file_to_uint8_t.py      # Converts a file to a uint8_t array
@@ -227,7 +235,8 @@ out/install/bin/
 - This repository is a template, not a complete production plugin.
 - Most plugin and login methods intentionally return empty/default values until you implement the target platform logic.
 - Keep `ThirdParty/` as submodules unless you intentionally change dependency management.
-- After changing plugin metadata, update or extend the tests in `test/test.cpp`.
+- After changing plugin metadata, update or extend `test/plugin/test_plugin.cpp`.
+- Add isolated implementation tests under `test/unit/`.
 
 ## License
 
