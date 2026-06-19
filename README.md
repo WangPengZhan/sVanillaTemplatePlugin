@@ -23,18 +23,26 @@ Use this project as the starting point for a new sVanilla site/platform plugin.
   - Linux/macOS: GCC or Clang
 - Git with submodule support
 - Python 3, only required for helper scripts
+- `clang-format`, only required by the formatting script
 - vcpkg from the `ThirdParty/vcpkg` submodule
 
 ## Clone
 
-Clone the repository with submodules:
+Clone the repository with submodules over HTTPS:
 
 ```powershell
-git clone --recursive <repo-url>
+git clone --recursive https://github.com/WangPengZhan/sVanillaTemplatePlugin.git
 cd sVanillaTemplatePlugin
 ```
 
-If the repository was cloned without submodules, initialize them manually:
+If your GitHub account is configured for SSH, you can use:
+
+```powershell
+git clone --recursive git@github.com:WangPengZhan/sVanillaTemplatePlugin.git
+cd sVanillaTemplatePlugin
+```
+
+If you already cloned the repository without `--recursive`, initialize its submodules from the repository directory:
 
 ```powershell
 git submodule update --init --recursive
@@ -103,7 +111,7 @@ The plugin artifact test validates the default metadata:
 |   |-- TemplatePluginCall.cpp  # Plugin lifecycle entry points
 |   `-- TemplatePluginLog.h     # Logger name and logging macros
 |-- test/
-|   |-- CMakeLists.txt          # Test target
+|   |-- CMakeLists.txt          # Test targets
 |   |-- plugin/
 |   |   `-- test_plugin.cpp     # Shared plugin artifact tests
 |   `-- unit/
@@ -153,7 +161,7 @@ Edit `src/TemplatePlugin.cpp`:
 - `getDownloader(const VideoInfoFull& videoInfo)`: create a downloader for resolved video information
 - `websiteIcon()`: return the website icon resource
 
-The template implementation currently returns `false`, empty objects, or null pointers. These are placeholders only.
+The URL parsing and download methods currently return `false`, empty objects, or null pointers. The template already includes a default website icon; replace it with the target platform's icon.
 
 ### 3. Implement Login Support
 
@@ -162,13 +170,18 @@ If the target platform requires login, edit `src/TemplateLogin.cpp`:
 - `supportsLogin()`
 - `getLoginStatus()`
 - `getScanContext()`
+- `loginSuccess()`
 - `cookies()`
 - `setCookies()`
 - `refreshCookies()`
+- `domain()`
 - `getUserInfo()`
+- `isLoggedIn()`
 - `logout()`
 - `history()`
+- `allResources()`
 - `resource()`
+- `pluginId()`
 
 If the plugin does not need login, keep `supportsLogin()` returning `false`.
 
@@ -215,6 +228,14 @@ python scripts/clang_format_all.py
 ```
 
 The script formats `src/` and `test/`, while skipping `build/` and `ThirdParty/`. It searches for `clang-format` in common install locations on Windows, macOS, and Linux.
+
+Convert a binary resource to a C++ `std::vector<uint8_t>` declaration with:
+
+```powershell
+python scripts/file_to_uint8_t.py --filePath path/to/resource --variant resource_name
+```
+
+Use `--filePaths`, `--variables`, and `--output` to generate a header containing multiple resources.
 
 ## Install
 
