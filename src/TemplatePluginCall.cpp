@@ -14,6 +14,11 @@ TemplatePlugin* pPlugin = nullptr;
 
 void initDir(const char* dir)
 {
+    if (!dir)
+    {
+        return;
+    }
+
     TemplatePlugin::setDir(dir);
     try
     {
