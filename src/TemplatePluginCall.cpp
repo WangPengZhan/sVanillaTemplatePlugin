@@ -5,7 +5,7 @@
 #include <spdlog/async.h>
 
 #include <TemplatePluginCall.h>
-#include <LoggerRegisterHelpper.h>
+#include <LoggerRegisterHelper.h>
 
 #include "TemplatePlugin.h"
 #include "TemplatePluginLog.h"
@@ -24,7 +24,7 @@ void initDir(const char* dir)
     {
         if (!spdlog::get(templatePluginName))
         {
-            LoggerRegisterHelpper::registerLogger(templatePluginName, std::string(dir) + "log/" + templatePluginName + ".log");
+            LoggerHelper::registerLogger(templatePluginName, std::string(dir) + "log/" + templatePluginName + ".log");
         }
     }
     catch (const std::exception& e)
@@ -53,5 +53,5 @@ void pluginDeinit()
 
 void deinit()
 {
-    LoggerRegisterHelpper::unregisterLogger(templatePluginName);
+    LoggerHelper::unregisterLogger(templatePluginName);
 }
